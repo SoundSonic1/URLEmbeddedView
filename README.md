@@ -17,7 +17,7 @@ Just add the dependency to your `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'com.github.nguyencse:urlembeddedview:1.0.2'
+    implementation 'com.github.SoundSonic1:urlembeddedview:-SNAPSHOT'
 }
 ```
 
