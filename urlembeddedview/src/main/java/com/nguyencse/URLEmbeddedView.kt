@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import coil.api.load
 import com.nguyencse.urlembeddedview.R
+import kotlinx.coroutines.Job
 
 class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
 
@@ -24,7 +25,7 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
     private var cslOGP: ConstraintLayout? = null
     private var cslOGPData: ConstraintLayout? = null
     private var prgLoading: ProgressBar? = null
-    private var urlTask: URLEmbeddedTask? = null
+    private var job: Job? = null
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -91,23 +92,25 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
         }
 
 
-    fun setURL(url: String, onLoadURLListener: OnLoadURLListener?) {
+    fun setURL(url: String, onLoadURLListener: OnLoadURLListener) {
         prgLoading!!.visibility = View.VISIBLE
         cslOGP!!.visibility = View.VISIBLE
         cslOGPData!!.visibility = View.INVISIBLE
 
-        urlTask = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
+        val urlTask = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
             override fun onLoadURLCompleted(data: URLEmbeddedData) {
                 prgLoading!!.visibility = View.GONE
                 cslOGPData!!.visibility = View.VISIBLE
-                onLoadURLListener?.onLoadURLCompleted(data)
+                onLoadURLListener.onLoadURLCompleted(data)
             }
         })
-        urlTask?.execute(url)
+        job = urlTask.fetchData(url)
     }
 
+    fun registerLifecycle(lifecycle: Lifecycle) = lifecycle.addObserver(this)
+
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun stopTask() = urlTask?.cancel(true)
+    fun stopTask() = job?.cancel()
 
     interface OnLoadURLListener {
         fun onLoadURLCompleted(data: URLEmbeddedData)

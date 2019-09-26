@@ -10,7 +10,7 @@
 
 ### Requirements
    - OS: Android
-   - minSdkVersion: 15
+   - minSdkVersion: 24
 
 ### Installation
 Just add the dependency to your `build.gradle`:

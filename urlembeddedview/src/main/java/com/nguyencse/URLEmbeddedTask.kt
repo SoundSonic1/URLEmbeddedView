@@ -1,23 +1,25 @@
 package com.nguyencse
 
-import android.os.AsyncTask
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-
 import java.io.IOException
 import java.net.URL
 import java.util.*
 
-class URLEmbeddedTask(
-        private val listener: OnLoadURLListener?
-) : AsyncTask<String, Void, URLEmbeddedData>() {
+class URLEmbeddedTask(private val listener: OnLoadURLListener) {
 
-    override fun doInBackground(vararg params: String): URLEmbeddedData {
+    fun fetchData(url: String) = CoroutineScope(Dispatchers.Main).launch {
+        val result = getUrlEmbeddedData(url)
+        listener.onLoadURLCompleted(result)
+    }
+
+    // TODO: check whether url is valid
+    private suspend fun getUrlEmbeddedData(url: String) = withContext(Dispatchers.IO) {
         val data = URLEmbeddedData()
         try {
-            var url = params[0]
-            url = (if (url.startsWith(URLConstants.PROTOCOL) || url.startsWith(URLConstants.PROTOCOL_S)) "" else URLConstants.PROTOCOL) + url
-
             val host = URL(url)
             data.host = host.host
 
@@ -40,12 +42,7 @@ class URLEmbeddedTask(
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        return data
-    }
-
-    override fun onPostExecute(result: URLEmbeddedData) {
-        listener?.onLoadURLCompleted(result)
+        data
     }
 
     interface OnLoadURLListener {
