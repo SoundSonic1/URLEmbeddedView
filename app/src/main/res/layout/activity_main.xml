@@ -32,10 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         app:description="Description"
-        app:favor="@drawable/ic_url"
+        app:favor="@drawable/ic_link"
         app:host="abc.com"
         app:layout_constraintTop_toBottomOf="@id/lnl_url"
-        app:thumbnail="@drawable/ic_url"
+        app:thumbnail="@drawable/ic_link"
         app:title="Title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

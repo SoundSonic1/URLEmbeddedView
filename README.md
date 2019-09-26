@@ -43,18 +43,25 @@ And DO NOT forget to add internet permission in manifest if already not present
   In code:
 
 ```groovy
-   URLEmbeddedView urlEmbeddedView = findViewById(R.id.uev);
-   
-   urlEmbeddedView.setURL("stackoverflow.com", new URLEmbeddedView.OnLoadURLListener() {
-       @Override
-       public void onLoadURLCompleted(URLEmbeddedData data) {
-           urlEmbeddedView.title(data.getTitle());
-           urlEmbeddedView.description(data.getDescription());
-           urlEmbeddedView.host(data.getHost());
-           urlEmbeddedView.thumbnail(data.getThumbnailURL());
-           urlEmbeddedView.favor(data.getFavorURL());
+   fun loadUrlPreview(urlEmbeddedView: URLEmbeddedView, url: String?) {
+       if (url.isNullOrBlank()) {
+           urlEmbeddedView.visibility = View.GONE
+       } else {
+           urlEmbeddedView.setURL(url, object : URLEmbeddedView.OnLoadURLListener {
+               override fun onLoadURLCompleted(data: URLEmbeddedData) {
+                   urlEmbeddedView.apply {
+                       title(data.title)
+                       description(data.description)
+                       host(data.host)
+                       thumbnail(data.thumbnailURL)
+                       favor(data.favorURL)
+                   }
+                   urlEmbeddedView.visibility = View.VISIBLE
+               }
+           })
        }
-   });
+   }
+
 ```
   Or you can use your layout to custom it:
   
