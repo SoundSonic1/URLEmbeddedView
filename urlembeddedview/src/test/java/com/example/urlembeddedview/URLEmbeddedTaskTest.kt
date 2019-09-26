@@ -64,14 +64,9 @@ class URLEmbeddedTaskTest {
 
     @Test
     fun testInvalidUrl() {
-        val emptyTask = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
-            override fun onLoadURLCompleted(data: URLEmbeddedData) {
-                testData = data
-            }
-        })
 
         runBlocking {
-            emptyTask.fetchData("").join()
+            task.fetchData("").join()
         }
         Assert.assertEquals("", testData?.title)
         Assert.assertEquals("", testData?.host)
