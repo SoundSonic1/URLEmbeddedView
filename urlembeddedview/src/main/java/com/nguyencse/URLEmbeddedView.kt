@@ -111,13 +111,18 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
         txtTitle?.text = data.title
         txtDescription?.text = data.description
         txtHost?.text = data.host
-        imgThumbnail?.load(data.thumbnailURL) {
-            crossfade(true)
-            placeholder(R.drawable.ic_link)
+        if (data.thumbnailURL.isNotBlank()) {
+            imgThumbnail?.load(data.thumbnailURL) {
+                crossfade(true)
+                placeholder(R.drawable.ic_link)
+            }
         }
-        imgFavorIcon?.load(data.favorURL) {
-            crossfade(true)
-            placeholder(R.drawable.ic_link)
+
+        if (data.favorURL.isNotBlank()) {
+            imgFavorIcon?.load(data.favorURL) {
+                crossfade(true)
+                placeholder(R.drawable.ic_link)
+            }
         }
     }
 
