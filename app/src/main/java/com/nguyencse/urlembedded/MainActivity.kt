@@ -15,11 +15,7 @@ class MainActivity : AppCompatActivity() {
         btn_url.setOnClickListener {
             url_embedded_view.setURL(edt_url.text.toString(), object : URLEmbeddedView.OnLoadURLListener {
                 override fun onLoadURLCompleted(data: URLEmbeddedData) {
-                    url_embedded_view.title(data.title)
-                    url_embedded_view.description(data.description)
-                    url_embedded_view.host(data.host)
-                    url_embedded_view.thumbnail(data.thumbnailURL)
-                    url_embedded_view.favor(data.favorURL)
+                    url_embedded_view.setData(data)
                 }
             })
         }

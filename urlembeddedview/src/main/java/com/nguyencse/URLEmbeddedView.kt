@@ -23,7 +23,6 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
     private var imgThumbnail: ImageView? = null
     private var imgFavorIcon: ImageView? = null
     private var cslOGP: ConstraintLayout? = null
-    private var cslOGPData: ConstraintLayout? = null
     private var prgLoading: ProgressBar? = null
     private var job: Job? = null
 
@@ -49,15 +48,14 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
         this.imgThumbnail = findViewById(R.id.imgThumbnail)
         this.imgFavorIcon = findViewById(R.id.imgFavorIcon)
         this.cslOGP = findViewById(R.id.cslOGP)
-        this.cslOGPData = findViewById(R.id.cslOGPData)
         this.prgLoading = findViewById(R.id.prg_loading)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.URLEmbeddedView, 0, 0)
-        this.txtTitle!!.text = typedArray.getText(R.styleable.URLEmbeddedView_title)
-        this.txtDescription!!.text = typedArray.getText(R.styleable.URLEmbeddedView_description)
-        this.txtHost!!.text = typedArray.getText(R.styleable.URLEmbeddedView_host)
-        this.imgFavorIcon!!.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_favor, 0))
-        this.imgThumbnail!!.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_thumbnail, 0))
+        this.txtTitle?.text = typedArray.getText(R.styleable.URLEmbeddedView_title)
+        this.txtDescription?.text = typedArray.getText(R.styleable.URLEmbeddedView_description)
+        this.txtHost?.text = typedArray.getText(R.styleable.URLEmbeddedView_host)
+        this.imgFavorIcon?.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_favor, 0))
+        this.imgThumbnail?.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_thumbnail, 0))
         typedArray.recycle()
     }
 
@@ -93,18 +91,34 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
 
 
     fun setURL(url: String, onLoadURLListener: OnLoadURLListener) {
-        prgLoading!!.visibility = View.VISIBLE
-        cslOGP!!.visibility = View.VISIBLE
-        cslOGPData!!.visibility = View.INVISIBLE
+        prgLoading?.visibility = View.VISIBLE
+        cslOGP?.visibility = View.INVISIBLE
 
         val urlTask = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
             override fun onLoadURLCompleted(data: URLEmbeddedData) {
-                prgLoading!!.visibility = View.GONE
-                cslOGPData!!.visibility = View.VISIBLE
+                prgLoading?.visibility = View.GONE
+                cslOGP?.visibility = View.VISIBLE
                 onLoadURLListener.onLoadURLCompleted(data)
             }
         })
         job = urlTask.fetchData(url)
+    }
+
+    /**
+     * Set the URLEmbeddedView according to the given URLEmbeddedData
+     */
+    fun setData(data: URLEmbeddedData) {
+        txtTitle?.text = data.title
+        txtDescription?.text = data.description
+        txtHost?.text = data.host
+        imgThumbnail?.load(data.thumbnailURL) {
+            crossfade(true)
+            placeholder(R.drawable.ic_link)
+        }
+        imgFavorIcon?.load(data.favorURL) {
+            crossfade(true)
+            placeholder(R.drawable.ic_link)
+        }
     }
 
     fun registerLifecycle(lifecycle: Lifecycle) = lifecycle.addObserver(this)
