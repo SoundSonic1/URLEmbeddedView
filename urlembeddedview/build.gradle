@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'jacoco-android'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 android {
     compileSdkVersion 29
@@ -50,4 +51,17 @@ repositories {
 
 jacoco {
     toolVersion = "0.8.5"
+}
+
+ktlint {
+    android.set(true)
+
+    reporters {
+        customReporters {
+            register("html") {
+                fileExtension = "html"
+                dependency = "me.cassiano:ktlint-html-reporter:0.2.3"
+            }
+        }
+    }
 }

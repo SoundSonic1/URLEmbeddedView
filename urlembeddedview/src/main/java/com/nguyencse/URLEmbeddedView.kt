@@ -34,7 +34,9 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
         initView(context, attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+            context, attrs, defStyleAttr
+    ) {
         initView(context, attrs)
     }
 
@@ -50,12 +52,21 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
         this.cslOGP = findViewById(R.id.cslOGP)
         this.prgLoading = findViewById(R.id.prg_loading)
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.URLEmbeddedView, 0, 0)
+        val typedArray = context.obtainStyledAttributes(
+                attrs,
+                R.styleable.URLEmbeddedView,
+                0,
+                0
+        )
         this.txtTitle?.text = typedArray.getText(R.styleable.URLEmbeddedView_title)
         this.txtDescription?.text = typedArray.getText(R.styleable.URLEmbeddedView_description)
         this.txtHost?.text = typedArray.getText(R.styleable.URLEmbeddedView_host)
-        this.imgFavorIcon?.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_favor, 0))
-        this.imgThumbnail?.setImageResource(typedArray.getResourceId(R.styleable.URLEmbeddedView_thumbnail, 0))
+        this.imgFavorIcon?.setImageResource(
+                typedArray.getResourceId(R.styleable.URLEmbeddedView_favor, 0)
+        )
+        this.imgThumbnail?.setImageResource(
+                typedArray.getResourceId(R.styleable.URLEmbeddedView_thumbnail, 0)
+        )
         typedArray.recycle()
     }
 
@@ -71,7 +82,6 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
             txtHost?.text = it
         }
 
-
     fun thumbnail(thumbnailURL: String?) =
         thumbnailURL?.let {
             imgThumbnail?.load(it) {
@@ -80,7 +90,6 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
             }
         }
 
-
     fun favor(favorURL: String?) =
         favorURL?.let {
             imgFavorIcon?.load(it) {
@@ -88,7 +97,6 @@ class URLEmbeddedView : ConstraintLayout, LifecycleObserver {
                 placeholder(R.drawable.ic_link)
             }
         }
-
 
     fun setURL(url: String, onLoadURLListener: OnLoadURLListener) {
         prgLoading?.visibility = View.VISIBLE
