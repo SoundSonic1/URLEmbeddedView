@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+         command: sudo chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run unit tests
+          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Run jacocoTest
+          command: ./gradlew jacocoTestDebugUnitTestReport
+      - run:
+          name: Upload to codecov
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Run Android lint tool
+          command: ./gradlew lintDebug
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: urlembeddedview/build/reports
+          destination: reports
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: urlembeddedview/build/test-results
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples

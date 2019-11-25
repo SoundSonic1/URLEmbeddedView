@@ -1,6 +1,6 @@
 # URLEmbeddedView
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://facebook.com/nguyencse)
+[![CircleCI](https://circleci.com/gh/SoundSonic1/URLEmbeddedView.svg?style=svg)](https://circleci.com/gh/SoundSonic1/URLEmbeddedView)
 
     URLEmbeddedView is a Android library which allows you show preview data of your URL.
 
