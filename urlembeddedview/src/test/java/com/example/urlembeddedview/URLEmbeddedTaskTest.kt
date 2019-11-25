@@ -2,9 +2,7 @@ package com.example.urlembeddedview
 
 import com.nguyencse.URLEmbeddedData
 import com.nguyencse.URLEmbeddedTask
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert
 import org.junit.Before
@@ -13,6 +11,8 @@ import org.junit.Test
 /**
  * Test class
  */
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class URLEmbeddedTaskTest {
 
     /**
@@ -23,7 +23,7 @@ class URLEmbeddedTaskTest {
 
     private var testData: URLEmbeddedData? = null
 
-    val task = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
+    private val task = URLEmbeddedTask(object : URLEmbeddedTask.OnLoadURLListener {
         override fun onLoadURLCompleted(data: URLEmbeddedData) {
             testData = data
         }

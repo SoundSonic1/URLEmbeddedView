@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.net.URL
-import java.util.*
+import java.util.Locale
 
 class URLEmbeddedTask(private val listener: OnLoadURLListener) {
 

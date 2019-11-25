@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">URLEmbeddedView</string>
+    <string name="preview">Preview</string>
 </resources>
